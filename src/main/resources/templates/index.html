@@ -1,0 +1,105 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>World Capitals</title>
+<link rel="stylesheet" href="webjars/bootstrap/4.3.1/css/bootstrap.min.css">
+<script type="text/javascript" src="webjars/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript" src="webjars/popper.js/1.14.3/popper.min.js"></script>
+<script type="text/javascript" src="webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" th:src="@{js/main.js}" src="../static/js/main.js"></script>
+</head>
+<body>
+	<div class="container">
+	<button class="btn btn-success mt-3 nBtn">New</button>
+		<div class="card mt-2">
+			<div class="card-block">
+				<table class="table table-hover table-bordered">
+					<thead>
+						<tr>
+							<th>ID</th>
+							<th>Country</th>
+							<th>Capital</th>
+							<th>Action</th>
+						</tr>
+					</thead>
+					
+					<tbody>
+						<tr th:each="country : ${data.content}">
+							<td th:text="${country.id}"></td>
+							<td th:text="${country.name}"></td>
+							<td th:text="${country.capital}"></td>
+							<td>
+								<a th:href="@{/delete/(id=${country.id})}" class="btn btn-danger delBtn">Delete</a>
+								<a th:href="@{/findOne/(id=${country.id})}" class="btn btn-primary eBtn">Edit</a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				
+				<ul class="nav nav-pills">
+					<li class="nav-item" th:each="i : ${#numbers.sequence(0, data.totalPages - 1)}">
+						<a th:href="@{/(page=${i})}" th:text="${i+1}" class="nav-link"
+						th:classappend="${currentPage}==${i}?'active':''"> 
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	
+	<form th:action="@{/save}" method="post" class="myForm">
+	<div class="modal" id="myModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4>Create or Update Country</h4>
+					<button class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body">
+					<div class="form-group row">
+						<label for="id" class="col-lg-3">ID</label>
+						<div class="col-lg-6">
+							<input type="text" name="id" id="id" value="" />
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="name" class="col-lg-3">Name</label>
+						<div class="col-lg-6">
+							<input type="text" name="name" id="name" value=""/>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="capital" class="col-lg-3">Capital</label>
+						<div class="col-lg-6">
+							<input type="text" name="capital" id="capital" value=""/>
+						</div>
+					</div>
+					<div class="row">
+						<div class="offset-3 col-lg-6">
+							<input type="submit" value="Save" class="btn btn-success"/>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	</form>
+	
+	<div class="modal" id="confirmModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+				<h4>Confirm</h4>
+				<button class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body">
+					<p>Do you really want to delete?</p>
+					<button class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<a href="" class="btn btn-danger" id="delRef">Delete</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+</body>
+</html>
